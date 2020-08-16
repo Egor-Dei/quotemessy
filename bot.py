@@ -50,6 +50,8 @@ def send_welcome(message):
             fast_quote(message, "Цитата")
         elif gmtime()[4] == 0 and gmtime()[5] == 0:
             fast_quote(message, "Цитата")
+        elif gmtime()[5] == 0:
+            fast_quote(message, "Цитата")
 
 
 @bot.message_handler(content_types=['text'])
