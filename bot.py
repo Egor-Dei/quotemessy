@@ -43,7 +43,7 @@ def send_welcome(message):
                      reply_markup=markup)
     check = True
     while True:
-        if gmtime()[3] == 19 and gmtime()[4] == 18 and gmtime()[5] == 0 and check:
+        if gmtime()[3] == 19 and gmtime()[4] == 30 and gmtime()[5] == 0 and check:
             bot.send_message(message.chat.id, "Доброго вечера)")
             fast_quote(message, "Цитата")
             check = False
