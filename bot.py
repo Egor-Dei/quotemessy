@@ -46,7 +46,7 @@ def send_welcome(message):
             fast_quote(message)
         elif gmtime()[3] == 7 and gmtime()[4] == 0 and gmtime()[5] == 0:
             fast_quote(message)
-        elif gmtime()[3] == 12 and gmtime()[4] == 0 and gmtime()[5] == 0:
+        elif gmtime()[3] == 12 and gmtime()[4] == 40 and gmtime()[5] == 0:
             fast_quote(message)
 
 
