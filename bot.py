@@ -41,17 +41,23 @@ def send_welcome(message):
     bot.send_message(message.chat.id, f"Здравствуйте, {message.from_user.first_name} {message.from_user.last_name}.\
  Меня зовут Messy. Я ваш бот-цитатник. Буду отправлять вам время от времени различные цитаты, чтобы было веселей)", \
                      reply_markup=markup)
+    check = True
     while True:
-        if gmtime()[3] == 21 and gmtime()[4] == 0 and gmtime()[5] == 0:
+        if gmtime()[3] == 19 and gmtime()[4] == 0 and gmtime()[5] == 0 and check:
+            bot.send_message(message.chat.id, "Доброго вечера)")
             fast_quote(message, "Цитата")
-        elif gmtime()[3] == 7 and gmtime()[4] == 0 and gmtime()[5] == 0:
+            check = False
+        elif gmtime()[3] == 7 and gmtime()[4] == 0 and gmtime()[5] == 0 and check:
+            bot.send_message(message.chat.id, "Доброго утра)")
             fast_quote(message, "Цитата")
-        elif gmtime()[3] == 12 and gmtime()[4] == 0 and gmtime()[5] == 0:
+            check = False
+        elif gmtime()[3] == 12 and gmtime()[4] == 0 and gmtime()[5] == 0 and check:
+            bot.send_message(message.chat.id, "Доброго дня)")
             fast_quote(message, "Цитата")
-        elif gmtime()[4] == 0 and gmtime()[5] == 0:
-            fast_quote(message, "Цитата")
-        elif gmtime()[5] == 0:
-            fast_quote(message, "Цитата")
+            check = False
+        if gmtime()[5] == 10:
+            check = True
+        
 
 
 @bot.message_handler(content_types=['text'])
