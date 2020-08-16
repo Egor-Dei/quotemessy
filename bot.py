@@ -43,16 +43,18 @@ def send_welcome(message):
                      reply_markup=markup)
     while True:
         if gmtime()[3] == 21 and gmtime()[4] == 0 and gmtime()[5] == 0:
-            fast_quote(message)
+            fast_quote(message, "Цитата")
         elif gmtime()[3] == 7 and gmtime()[4] == 0 and gmtime()[5] == 0:
-            fast_quote(message)
-        elif gmtime()[3] == 12 and gmtime()[4] == 40 and gmtime()[5] == 0:
-            fast_quote(message)
+            fast_quote(message, "Цитата")
+        elif gmtime()[3] == 12 and gmtime()[4] == 0 and gmtime()[5] == 0:
+            fast_quote(message, "Цитата")
+        elif gmtime()[4] == 0 and gmtime()[5] == 0:
+            fast_quote(message, "Цитата")
 
 
 @bot.message_handler(content_types=['text'])
-def fast_quote(message):
-    if message.text == 'Цитата':
+def fast_quote(message, other=""):
+    if message.text == 'Цитата' or other == "Цитата":
         bot.send_message(message.chat.id, "Вот, держите)")
         bot.send_message(message.chat.id, f'"{get_quote()}"')
 
