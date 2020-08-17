@@ -47,8 +47,9 @@ def send_welcome(message1):
     bot.send_message(real_message.chat.id, f"Здравствуйте, {real_message.from_user.first_name} {real_message.from_user.last_name}.\
  Меня зовут Messy. Я ваш бот-цитатник. Буду отправлять вам время от времени различные цитаты, чтобы было веселей)", \
                      reply_markup=markup)
-    check = count_message
-    while check <= 1:
+    check_numb = count_message
+    check = True
+    while check_numb <= 1:
         
         if gmtime()[3] == 19 and gmtime()[4] == 0 and gmtime()[5] == 0 and check:
             bot.send_message(real_message.chat.id, "Доброго вечера)")
@@ -62,7 +63,7 @@ def send_welcome(message1):
             bot.send_message(real_message.chat.id, "Доброго дня)")
             fast_quote(real_message, "Цитата")
             check = False
-        if gmtime()[5] == 10:
+        if gmtime()[5] == 10 and gmtime()[4] == 0 and (gmtime()[3] == 12 or gmtime()[3] == 7 or gmtime()[3] == 19):
             check = True
             
         @bot.message_handler(content_types=['text'])
@@ -72,16 +73,6 @@ def send_welcome(message1):
             if real_message.text == 'Цитата' or other == "Цитата":
                 bot.send_message(real_message.chat.id, "Вот, держите)")
                 bot.send_message(real_message.chat.id, f'"{get_quote()}"')
-            
-            
-
-'''@bot.message_handler(content_types=['text'])
-def fast_quote(message, other=""):
-    global real_message
-    real_message = message
-    if message.text == 'Цитата' or other == "Цитата":
-        bot.send_message(message.chat.id, "Вот, держите)")
-        bot.send_message(message.chat.id, f'"{get_quote()}"')'''
 
 
 while __name__ == "__main__":
