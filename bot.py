@@ -3,14 +3,12 @@ from telebot import types
 import config
 import sqlite3
 import random
-from time import gmtime
+from time import gmtime, time
 
 real_message = ""
 
-
 bot = telebot.TeleBot(config.token)
 quote = "Нажми еще раз"
-count_message = 0
 
 
 def get_quote():
@@ -36,43 +34,55 @@ def get_quote():
     return quote
 
 
-@bot.message_handler(commands=['start'])
-def send_welcome(message1):
-    global real_message, count_message
-    count_message += 1
-    real_message = message1
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item = types.KeyboardButton("Цитата")
-    markup.add(item)
-    bot.send_message(real_message.chat.id, f"Здравствуйте, {real_message.from_user.first_name} {real_message.from_user.last_name}.\
- Меня зовут Messy. Я ваш бот-цитатник. Буду отправлять вам время от времени различные цитаты, чтобы было веселей)", \
-                     reply_markup=markup)
-    check_numb = count_message
+@bot.message_handler(content_types=["text"])
+def send_message(message):
+    global real_message
+    a = time()
     check = True
-    while check_numb <= 1:
-        
+    check_send = True
+    real_message = message
+    while time() - a <= 1:
+        pass
+
+    while True:
+        if real_message != message:
+            break
         if gmtime()[3] == 19 and gmtime()[4] == 0 and gmtime()[5] == 0 and check:
-            bot.send_message(real_message.chat.id, "Доброго вечера)")
-            fast_quote(real_message, "Цитата")
+            bot.send_message(message.chat.id, "Доброго вечера)")
+            fast_quote(message, "Цитата")
             check = False
         elif gmtime()[3] == 7 and gmtime()[4] == 0 and gmtime()[5] == 0 and check:
-            bot.send_message(real_message.chat.id, "Доброго утра)")
-            fast_quote(real_message, "Цитата")
+            bot.send_message(message.chat.id, "Доброго утра)")
+            fast_quote(message, "Цитата")
             check = False
         elif gmtime()[3] == 12 and gmtime()[4] == 0 and gmtime()[5] == 0 and check:
-            bot.send_message(real_message.chat.id, "Доброго дня)")
-            fast_quote(real_message, "Цитата")
+            bot.send_message(message.chat.id, "Доброго дня)")
+            fast_quote(message, "Цитата")
             check = False
-        if gmtime()[5] == 10 and gmtime()[4] == 0 and (gmtime()[3] == 12 or gmtime()[3] == 7 or gmtime()[3] == 19):
+        if gmtime()[5] == 10 and gmtime()[4] == 0 and (gmtime()[3] == 7 or gmtime()[3] == 12 or gmtime()[3] == 19):
             check = True
-            
-        @bot.message_handler(content_types=['text'])
-        def fast_quote(message2, other=""):
-            global real_message
-            real_message = message2
-            if real_message.text == 'Цитата' or other == "Цитата":
-                bot.send_message(real_message.chat.id, "Вот, держите)")
-                bot.send_message(real_message.chat.id, f'"{get_quote()}"')
+
+        if message.text == "/start" and check_send:
+            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+            item = types.KeyboardButton("Цитата")
+            markup.add(item)
+            bot.send_message(message.chat.id,
+                             f"Здравствуйте, {message.from_user.first_name} {message.from_user.last_name}.\
+            Меня зовут Messy. Я ваш бот-цитатник. Буду отправлять вам время от времени различные цитаты, чтобы было веселей)", \
+                             reply_markup=markup)
+            check_send = False
+
+        if message.text == "Цитата" and check_send:
+            fast_quote(message)
+            check_send = False
+
+
+def fast_quote(message, other=""):
+    global real_message
+    real_message = message
+    if message.text == 'Цитата' or other == "Цитата":
+        bot.send_message(message.chat.id, "Вот, держите)")
+        bot.send_message(message.chat.id, f'"{get_quote()}"')
 
 
 while __name__ == "__main__":
